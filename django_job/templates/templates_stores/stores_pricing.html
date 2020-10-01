@@ -1,0 +1,53 @@
+{% extends "templates_stores/base_stores.html" %}
+{% load templatetags %}
+{% load static %}
+{% load humanize %}
+
+{% block inside_head_pricing %}
+  <script src="https://js.chargebee.com/v2/chargebee.js" data-cb-site="cartstuff" ></script>
+{% endblock inside_head_pricing %}
+
+
+{% block content %}
+
+<div class="container">
+<div class="info">
+{# https://stackoverflow.com/a/22466415#}
+{#  forloop.counter starts the index with 1, divisibleby 3 does not work. So use forloop.counter0 instead.#}
+
+<div class="row">
+  <div class="col-xs-4">
+    <div class="card.no-hover" id="pricing_div_free">
+      <div class="card-body">
+        <h4 class="card-title mt-2"> MANAGE ACCOUNT </h4>
+        <a href="javascript:void(0)" data-cb-type="portal">
+          MANAGE ACCOUNT
+        </a>
+      </div>
+    </div>
+  </div>
+
+<div class="row">
+  <div class="col-xs-4">
+    <div class="card.no-hover" id="pricing_div_free">
+      <div class="card-body">
+        <h4 class="card-title mt-2"> Free </h4>
+        <a href="javascript:void(0)" data-cb-type="checkout" data-cb-plan-id="plan_free" >subscribe</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xs-4">
+    <div class="card.no-hover" id="pricing_div_free">
+      <div class="card-body">
+        <h4 class="card-title mt-2"> Intro </h4>
+        <a href="javascript:void(0)" data-cb-type="checkout" data-cb-plan-id="plan_intro" >subscribe</a>      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+{% endblock content %}
+

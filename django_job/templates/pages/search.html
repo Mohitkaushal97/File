@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+  <style>
+    #add_search {
+      padding: 30px;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      margin: 0px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    #id_search_list {
+      padding: 30px;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      margin: 0px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    {#   Table CSS start  #}
+    table {
+      width: 100%;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    tr:nth-child(even) {
+      background-color: #d6d4d4;
+    }
+
+    .table tbody tr:hover {
+      background-color: #7fccee; /*--- this is a blue color when hover ---*/
+    }
+
+    {#   Table CSS end  #}
+  </style>
+
+  <div style="padding-top: 30px">
+
+    <div id="add_search">
+      <form method="post" action="{% url 'search' %}">
+        {% csrf_token %}
+
+        <h1>Add Search </h1>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Search Name</label>
+          <div class="col-sm-6">
+            <input type="text" name="title" class="form-control form-control-sm" id="colFormLabelSm">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Initial Search Keyword</label>
+          <div class="col-sm-6">
+            <input type="text" name="initial_keywords" class="form-control form-control-sm" id="colFormLabelSm" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Description <br>(optional): </label>
+          <div class="col-sm-6">
+            <textarea type="text" name="user_search_description" class="form-control form-control-sm" id="colFormLabelSm"
+                      style="height: 50px"></textarea>
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {#=============================================#}
+
+  <div class="container" style="margin-top: 30px" id="id_search_list">
+    <div>
+      <h2><strong>Search List</strong></h2>
+    </div>
+    {% if user_search_list|length > 0 %}
+      <div class="container col-md-12">
+        <table class="table table-hover table-light table-bordered">
+          <thead>
+          <tr>
+
+            <th scope="col">Title</th>
+            <th scope="col">Keyword</th>
+            <th scope="col">Description</th>
+            <th scope="col"></th>
+
+          </tr>
+          </thead>
+          <tbody>
+          {% for user_search in user_search_list %}
+            <tr  class='clickable-row' data-href='{% url 'job_search_with_sid_new' user_search.search_id %}' tabindex="0">
+            <td> {% if user_search.title %}{{ user_search.title }}{% else %}---{% endif %}  </td>
+            <td> {{ user_search.keywords }} </td>
+            <td>{% if user_search.description %}{{ user_search.description }}{% else %}---{% endif %} </td>
+            <td>  <a href="{% url 'top_search_jobs' user_search.search_id %}">Top jobs</a>   </td>
+
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div><strong>No search list available...</strong></div>
+    {% endif %}
+  </div>
+
+
+{% endblock content %}
+
+
+{% block javascript %}
+  {{ block.super }}
+  <script>
+    jQuery(document).ready(function ($) {
+      $(".clickable-row").click(function () {
+        window.location = $(this).data("href");
+      });
+
+      $('.table tbody tr').click(function () {
+        $(this).addClass('active'); //I'm adding the color gray with css to '.active'
+      });
+    });
+  </script>
+{% endblock javascript %}

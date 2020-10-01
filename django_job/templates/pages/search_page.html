@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+
+  <style>
+    #id_search_page {
+      padding: 30px;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      margin: 10px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .btn{
+      margin-right: 10px;
+    }
+
+  </style>
+
+  <div style="padding-top: 30px">
+    <div class="container" id="id_search_page">
+      <div>
+        job description title
+      </div>
+      <br>
+
+      <div class=" btn-group-lg "  aria-label="Basic example">
+        <button type="button" class="btn btn-success">Yes</button>
+        <button  type="button" class="btn btn-danger">No</button>
+        <button  type="button" class="btn btn-warning">Skip</button>
+      </div>
+      <br>
+      <br>
+      <div>
+        job description text
+        <br>
+        <p> job description text job description text
+          job description text job description text
+          job description text job description text
+          job description text job description text job description text
+          job description text job description text
+          job description text
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock content %}

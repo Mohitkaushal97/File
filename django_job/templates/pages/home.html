@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load templatetags %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+{#  See template: WB021609D/boomerang-v3.6.1/documentation/blocks/jobs.html #}
+{% for job in jobdescription_instances %}
+    <!-- No shadow -->
+  <div class="block block--style-3 list">
+{#    <div class="block-image block-image-sm">#}
+{#      <a href="#">#}
+{#        <img src="path_to_your_image" alt="">#}
+{#      </a>#}
+{#    </div>#}
+
+{#          <div class="block-title-wrapper">#}
+          <div>
+            <span class="badge label-md bg-pink">Picked</span>
+            <span class="badge label-md bg-green">Part time</span>
+          </div>
+    {#      <a class="accordion-toggle" data-toggle="collapse" data-parent="#collapseExample_XXX_parent" href="#collapseExample_1111">#}
+    <a class="accordion-toggle" data-toggle="collapse" href="#collapseExample_{{ job.id }}">
+      <div class="block-title-wrapper">
+        {#          <h3 class="heading heading-5 strong-500 mt-1" data-toggle="collapse" href="#collapseExample_1111">#}
+        <h3 class="heading heading-5 strong-500 mt-1" data-toggle="collapse">
+          {{ job.job_title }}
+        </h3>
+
+        <h4 class="heading heading-xs c-gray-light text-uppercase strong-400">
+          {{ job.job_location }}
+        </h4>
+      </div>
+    </a>
+
+
+    <span class="clearfix"></span>
+    <div id="collapseExample_{{ job.id }}" class="panel-collapse collapse">
+      <div id="block_body_{{ job.id }}" class="block-body">
+        <h4 class="heading heading-xs c-style-1 text-uppercase">Description:dd</h4>
+        <div class="card-body">
+{#          <p class="c-light">#}
+          <p>
+            {{ job.full_description|safe }}
+            {#                Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna ut enim ad minim veniam.#}
+          </p>
+        </div>
+      </div>
+{#      <div class="block-footer border-top">#}
+{#      <div class="row align-items-center">#}
+{#        <div class="col-sm-8 col-12">#}
+{#          <ul class="inline-links inline-links--style-3">#}
+            {#                        <li>#}
+            {#                            <a href="#">#}
+            {#                                <i class="fa fa-heart"></i> 50#}
+            {#                            </a>#}
+            {#                        </li>#}
+            {#                        <li>#}
+            {#                            <i class="fa fa-eye"></i> 750#}
+            {#                        </li>#}
+{#          </ul>#}
+{#        </div>#}
+{#        <div class="col-sm-4 col-6 text-right">#}
+{#          <div class="btn-container">#}
+{#            <a href="#" class="btn btn-styled btn-xs-block btn-sm btn-base-1">More details..</a>#}
+{#          </div>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+    </div>
+
+  </div>
+{% endfor %}
+
+
+  <nav aria-label="Page navigation example" class="pagination">
+    <ul class="pagination">
+      {% if 'previous_page' in pagination_data and pagination_data.previous_page != None %}
+        <li class="page-item"><a class="page-link" href="?page={{ pagination_data.previous_page }}">Previous</a></li>
+      {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+      {% endif %}
+
+    {% if pagination_data.current_page > 0 %}
+      <li class="page-item"><a class="page-link" href="?page=0">0</a></li>
+    {% endif %}
+    {% if pagination_data.current_page > 1 %}
+      <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+    {% endif %}
+    {% if pagination_data.current_page > 1 %}
+      <li class="page-item"><a class="page-link" href="?page=1">2</a></li>
+    {% endif %}
+
+      <li class="page-item active"><a class="page-link" href="#">{{pagination_data.current_page}}</a></li>
+
+    {% if 'next_page' in pagination_data and pagination_data.next_page != None %}
+          <li class="page-item"><a class="page-link" href="?page={{pagination_data.current_page | add:1}}">{{pagination_data.current_page | add:1}}</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{pagination_data.current_page | add:2}}">{{pagination_data.current_page | add:2}}</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{pagination_data.current_page | add:3}}">{{pagination_data.current_page | add:3}}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ pagination_data.next_page }}">Next</a></li>
+      {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+      {% endif %}
+
+    </ul>
+  </nav>
+
+
+
+{##}
+{#<a href="#" class="btn btn-styled btn-base-1">Base color 1</a>#}
+{#<a href="#" class="btn btn-styled btn-base-2">Base color 2</a>#}
+{#<a href="#" class="btn btn-styled btn-base-3">Base color 3</a>#}
+{#<a href="#" class="btn btn-styled btn-base-4">Base color 4</a>#}
+{#<a href="#" class="btn btn-styled btn-base-5">Base color 5</a>#}
+{##}
+{#<button type="button" class="btn btn-styled btn-primary">Primary</button>#}
+{#<button type="button" class="btn btn-styled btn-secondary">Secondary</button>#}
+{#<button type="button" class="btn btn-styled btn-success">Success</button>#}
+{#<button type="button" class="btn btn-styled btn-danger">Danger</button>#}
+{#<button type="button" class="btn btn-styled btn-warning">Warning</button>#}
+{#<button type="button" class="btn btn-styled btn-info">Info</button>#}
+{#<button type="button" class="btn btn-styled btn-light">Light</button>#}
+{#<button type="button" class="btn btn-styled btn-dark">Dark</button>#}
+{##}
+{#<button type="button" class="btn btn-styled btn-link">Link</button>#}
+{##}
+{#<div class="card">#}
+{#    <div class="card-body">#}
+{#        <p class="mb-0">This is some text within a card body.<p>#}
+{#    </div>#}
+{#</div>#}
+{##}
+{#      <div class="card">#}
+{#    <div class="card-body">#}
+{#        <p class="mb-0">This is some text within a card body.<p>#}
+{#    </div>#}
+{#</div>#}
+{##}
+{#      <br>#}
+{#      <div class="accordion accordion--style-4" id="collapse_2">#}
+{#    <div class="card">#}
+{#        <div class="card-header">#}
+{#            <h4 class="card-title">#}
+{#                <a class="accordion-toggle" data-toggle="collapse" data-parent="#collapse_2" href="#collapse_2-1" aria-hidden="false" aria-expanded="true">#}
+{#                    <span class="collapse-heading-icon">#}
+{#                        <i class="ion ion-ios-chatboxes-outline"></i>#}
+{#                    </span>#}
+{#                    Toggle item #1#}
+{#                </a>#}
+{#            </h4>#}
+{#        </div>#}
+{#        <div id="collapse_2-1" class="panel-collapse collapse show">#}
+{#            <div class="card-body">#}
+{#                <p>#}
+{#                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium lorem non vestibulum scelerisque. Proin a vestibulum sem, eget tristique massa. Aliquam lacinia rhoncus nibh quis ornare.#}
+{#                </p>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#        <br>#}
+{#    <div class="card">#}
+{#        <div class="card-header">#}
+{#            <h4 class="card-title">#}
+{#                <a class="accordion-toggle" data-toggle="collapse" data-parent="#collapse_2" href="#collapse_2-2">#}
+{#                    <span class="collapse-heading-icon">#}
+{#                        <i class="ion ion-ios-cog-outline"></i>#}
+{#                    </span>#}
+{#                    Toggle item #2#}
+{#                </a>#}
+{#            </h4>#}
+{#        </div>#}
+{#        <div id="collapse_2-2" class="panel-collapse collapse">#}
+{#            <div class="card-body">#}
+{#                <p>#}
+{#                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium lorem non vestibulum scelerisque. Proin a vestibulum sem, eget tristique massa. Aliquam lacinia rhoncus nibh quis ornare.#}
+{#                </p>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+
+
+{% endblock content %}
+

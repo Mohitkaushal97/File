@@ -1,0 +1,126 @@
+{% load static i18n %}<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{#    <title>Hello, World!</title>#}
+  <title>{% block title %}Django Job{% endblock title %}</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" type="text/css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800|Roboto:400,500,700" rel="stylesheet">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/swiper/css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/hamburgers/hamburgers.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'assets/vendor/animate/animate.min.css' %}" type="text/css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome/css/font-awesome.min.css' %}" type="text/css">
+
+    <!-- Global style (main) -->
+{#    <link type="text/css" href="{% static 'assets/css/boomerang.css' %}" rel="stylesheet" media="screen">#}
+    <link type="text/css" href="{% static 'assets/css/boomerang.min.css' %}" rel="stylesheet" media="screen">
+
+    <!-- Custom style - Remove if not necessary -->
+    <link type="text/css" href="{% static 'assets/css/custom-style.css' %}" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png">
+
+</head>
+<body>
+
+    <main class="body-wrap">
+
+{#      some elements, taken from documentation/components/buttons.html#}
+
+<a href="#" class="btn btn-styled btn-base-1">Base color 1</a>
+<a href="#" class="btn btn-styled btn-base-2">Base color 2</a>
+<a href="#" class="btn btn-styled btn-base-3">Base color 3</a>
+<a href="#" class="btn btn-styled btn-base-4">Base color 4</a>
+<a href="#" class="btn btn-styled btn-base-5">Base color 5</a>
+
+<button type="button" class="btn btn-styled btn-primary">Primary</button>
+<button type="button" class="btn btn-styled btn-secondary">Secondary</button>
+<button type="button" class="btn btn-styled btn-success">Success</button>
+<button type="button" class="btn btn-styled btn-danger">Danger</button>
+<button type="button" class="btn btn-styled btn-warning">Warning</button>
+<button type="button" class="btn btn-styled btn-info">Info</button>
+<button type="button" class="btn btn-styled btn-light">Light</button>
+<button type="button" class="btn btn-styled btn-dark">Dark</button>
+
+<button type="button" class="btn btn-styled btn-link">Link</button>
+
+<div class="card">
+    <div class="card-body">
+        <p class="mb-0">This is some text within a card body.<p>
+    </div>
+</div>
+
+      <div class="card">
+    <div class="card-body">
+        <p class="mb-0">This is some text within a card body.<p>
+    </div>
+</div>
+
+      <br>
+      <div class="accordion accordion--style-4" id="collapse_2">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#collapse_2" href="#collapse_2-1" aria-hidden="false" aria-expanded="true">
+                    <span class="collapse-heading-icon">
+                        <i class="ion ion-ios-chatboxes-outline"></i>
+                    </span>
+                    Toggle item #1
+                </a>
+            </h4>
+        </div>
+        <div id="collapse_2-1" class="panel-collapse collapse show">
+            <div class="card-body">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium lorem non vestibulum scelerisque. Proin a vestibulum sem, eget tristique massa. Aliquam lacinia rhoncus nibh quis ornare.
+                </p>
+            </div>
+        </div>
+    </div>
+        <br>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#collapse_2" href="#collapse_2-2">
+                    <span class="collapse-heading-icon">
+                        <i class="ion ion-ios-cog-outline"></i>
+                    </span>
+                    Toggle item #2
+                </a>
+            </h4>
+        </div>
+        <div id="collapse_2-2" class="panel-collapse collapse">
+            <div class="card-body">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium lorem non vestibulum scelerisque. Proin a vestibulum sem, eget tristique massa. Aliquam lacinia rhoncus nibh quis ornare.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </main>
+
+    <!-- Core -->
+    <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/popper/popper.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- App JS -->
+    <script src="{% static 'assets/js/boomerang.min.js' %}"></script>
+</body>
+</html>
+

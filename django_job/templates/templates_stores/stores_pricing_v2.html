@@ -1,0 +1,225 @@
+{% extends "templates_stores/base_stores.html" %}
+{% load templatetags %}
+{% load static %}
+{% load humanize %}
+
+{#disable Crisp on pricing page#}
+{% block crisp_code_block %}
+{% endblock crisp_code_block %}
+
+{% block inside_head_pricing %}
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://js.chargebee.com/v2/chargebee.js"></script>
+{% endblock inside_head_pricing %}
+
+{% block content %}
+{#  https://docs.djangoproject.com/en/2.1/ref/csrf/#}
+{% csrf_token %}
+
+<div id="app">
+  <a href="javascript:void(0)" id="cb-checkout-free">Checout - cbdemo_free</a>
+  <br />
+  <a href="javascript:void(0)" id="cb-checkout-grow">Checout - cbdemo_grow</a>
+  <br />
+  <a href="javascript:void(0)" id="cb-checkout-scale">Checout - cbdemo_scale</a>
+  <br />
+{#  <a href="javascript:void(0)" id="cb-portal">Sample Portal</a>#}
+  <br/>
+</div>
+
+
+    <script>
+
+      $(document).ready(function() {
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                console.log("ajaxPrefilter:: set csrftoken to [" + csrftoken + "]");
+            }
+        }
+        });
+
+        var cbInstance = window.Chargebee.init({site: "cartstuff-test"});
+        cbInstance.setPortalSession(() => {
+          {#- // we have used axios for performing http requests -#}
+          {#- // Hit your end point that returns portal session object as response -#}
+          {#- // This sample end point will call the below api -#}
+          {#- // https://apidocs.chargebee.com/docs/api/portal_sessions#create_a_portal_session -#}
+          {#- //url: "http://localhost:8001/api/generate_portal_session" -#}
+
+      {#- axios, jquery: https://stackoverflow.com/questions/43193084/converting-jquery-request-to-axios/43193298 -#}
+			return $.ajax({
+            method: "post",
+            url: "/crb_api/create_portal_session"
+          });
+        });
+
+        $("#cb-checkout-free").on("click", function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          cbInstance.openCheckout({
+              hostedPage: function() {
+                {#// Hit your end point that returns hosted page object as response#}
+                {#// This sample end point will call the below api#}
+                {#// You can pass hosted page object created as a result of checkout_new, checkout_existing, manage_payment_sources#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#checkout_new_subscription#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#checkout_existing_subscription#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#manage_payment_sources#}
+                {#// If you want to use paypal, go cardless and plaid, pass embed parameter as false#}
+
+                return $.ajax({
+                  method: "post",
+                  url: "/crb_api/generate_checkout_url",
+                  data: {
+                    plan_id: "cbdemo_free"
+                  }
+                });
+              },
+              loaded: function() {
+                console.log("cbdemo_free checkout opened");
+              },
+              close: function() {
+                  console.log("cbdemo_free checkout closed");
+              },
+              success: function(hostedPageId) {
+                console.log(hostedPageId);
+                {#// Hosted page id will be unique token for the checkout that happened#}
+                {#// You can pass this hosted page id to your backend#}
+                {#// and then call our retrieve hosted page api to get subscription details#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#retrieve_a_hosted_page#}
+                window.location.href = "/return_page_v2?hpid=" + hostedPageId;
+              },
+              step: function(value) {
+                  // value -> which step in checkout
+                  console.log(value);
+              }
+            });
+        });
+
+
+        $("#cb-checkout-grow").on("click", function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          cbInstance.openCheckout({
+              hostedPage: function() {
+                {#// Hit your end point that returns hosted page object as response#}
+                {#// This sample end point will call the below api#}
+                {#// You can pass hosted page object created as a result of checkout_new, checkout_existing, manage_payment_sources#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#checkout_new_subscription#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#checkout_existing_subscription#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#manage_payment_sources#}
+                {#// If you want to use paypal, go cardless and plaid, pass embed parameter as false#}
+
+                return $.ajax({
+                  method: "post",
+                  url: "/crb_api/generate_checkout_url",
+                  data: {
+                    plan_id: "cbdemo_grow"
+                  }
+                });
+              },
+              loaded: function() {
+                console.log("cbdemo_grow checkout opened");
+              },
+              close: function() {
+                  console.log("cbdemo_grow checkout closed");
+              },
+              success: function(hostedPageId) {
+                console.log(hostedPageId);
+                {#// Hosted page id will be unique token for the checkout that happened#}
+                {#// You can pass this hosted page id to your backend#}
+                {#// and then call our retrieve hosted page api to get subscription details#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#retrieve_a_hosted_page#}
+                window.location.href = "/return_page_v2?hpid=" + hostedPageId;
+              },
+              step: function(value) {
+                  // value -> which step in checkout
+                  console.log(value);
+              }
+            });
+        });
+
+
+        $("#cb-checkout-scale").on("click", function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          cbInstance.openCheckout({
+              hostedPage: function() {
+                {#// Hit your end point that returns hosted page object as response#}
+                {#// This sample end point will call the below api#}
+                {#// You can pass hosted page object created as a result of checkout_new, checkout_existing, manage_payment_sources#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#checkout_new_subscription#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#checkout_existing_subscription#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#manage_payment_sources#}
+                {#// If you want to use paypal, go cardless and plaid, pass embed parameter as false#}
+
+                return $.ajax({
+                  method: "post",
+                  url: "/crb_api/generate_checkout_url",
+                  data: {
+                    plan_id: "cbdemo_scale"
+                  }
+                });
+              },
+              loaded: function() {
+                console.log("cbdemo_scale checkout opened");
+              },
+              close: function() {
+                  console.log("cbdemo_scale checkout closed");
+              },
+              success: function(hostedPageId) {
+                console.log(hostedPageId);
+                {#// Hosted page id will be unique token for the checkout that happened#}
+                {#// You can pass this hosted page id to your backend#}
+                {#// and then call our retrieve hosted page api to get subscription details#}
+                {#// https://apidocs.chargebee.com/docs/api/hosted_pages#retrieve_a_hosted_page#}
+
+                window.location.href = "/return_page_v2?hpid=" + hostedPageId;
+              },
+              step: function(value) {
+                  // value -> which step in checkout
+                  console.log(value);
+              }
+            });
+        });
+
+        {#$("#cb-portal").on("click", function(event) {#}
+        {#  event.stopPropagation();#}
+        {#  event.preventDefault();#}
+        {#  cbInstance.createChargebeePortal().open({#}
+        {#    loaded: function() {#}
+        {##}
+        {#    },#}
+        {#    close: function() {#}
+        {##}
+        {#    },#}
+        {#    paymentSourceAdd: function(status) {#}
+        {#      console.log("payment source add" + status);#}
+        {#    },#}
+        {#    paymentSourceUpdate: function(status) {#}
+        {#      console.log("payment source update" + status);#}
+        {#    },#}
+        {#    paymentSourceRemove: function(status) {#}
+        {#      console.log("payment source removed");#}
+        {#    }#}
+        {#  })#}
+        {# }); #}
+
+      });
+    </script>
+
+{% endblock content %}
+
+
+{% block suffix_scripts_load %}
+{# no jquery load, since already loaded above in pricing page #}
+{#<script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>#}
+<script src="{% static 'assets/vendor/popper/popper.min.js' %}"></script>
+<script src="{% static 'assets/vendor/bootstrap/bootstrap.min.js' %}" ></script>
+{#<script src="{% static 'js/search_filter.js' %}"></script>#}
+{% endblock suffix_scripts_load %}
+

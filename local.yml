@@ -1,0 +1,75 @@
+version: '3'
+
+volumes:
+  local_postgres_data: {}
+  local_postgres_data_backups: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: django_job_local_django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    environment:
+      - API__SERVER_WITH_PORT=${API__SERVER_WITH_PORT}
+      - SECRET_AUTH__JOBS_APP_SECRETS=${SECRET_AUTH__JOBS_APP_SECRETS}
+      - DJANGO_SETTINGS_MODULE=config.settings_local
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: django_job_production_postgres
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - local_postgres_data_backups:/backups
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings_local
+    env_file:
+      - ./.envs/.local/.postgres
+
+  redis:
+    image: redis:5.0
+
+#  celeryworker:
+#    <<: *django
+#    image: django_job_local_celeryworker
+#    depends_on:
+#      - redis
+#      - postgres
+#
+#    ports: []
+#    environment:
+#      - DJANGO_SETTINGS_MODULE=config.settings_local
+#    command: /start-celeryworker
+#
+#  celerybeat:
+#    <<: *django
+#    image: django_job_local_celerybeat
+#    depends_on:
+#      - redis
+#      - postgres
+#
+#    ports: []
+#    environment:
+#      - DJANGO_SETTINGS_MODULE=config.settings_local
+#    command: /start-celerybeat
+#
+#  flower:
+#    <<: *django
+#    image: django_job_local_flower
+#    ports:
+#      - "5555:5555"
+#    environment:
+#      - DJANGO_SETTINGS_MODULE=config.settings_local
+#    command: /start-flower

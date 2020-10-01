@@ -1,0 +1,107 @@
+{# lazy template base #}
+{% load static i18n compress %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="{% static 'assets/img/favicon.ico' %}" rel="icon" type="image/png">
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/bootstrap.min.css' %} ">
+
+    <!-- font awesome icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+
+    <!-- lazy styling -->
+    <link rel="stylesheet" href="{% static 'assets/css/lazy.css' %}">
+
+
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>{% block title %}Stores Datum - Information and Intel about online stores and Ecommerce{% endblock title %}</title>
+
+  {% block crisp_code_block %}
+    {#  crisp code  - jobs leopard#}
+    <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="2aa4d177-beb7-41da-aac9-206f51874ed0";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
+  {% endblock crisp_code_block %}
+
+{#  inside head tag - use for pricing page#}
+  {% block inside_head_pricing %}
+  {% endblock inside_head_pricing %}
+
+</head>
+
+{% block body_tag %}
+<body>
+{% endblock body_tag %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="#">Stores Datum</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown-1" aria-controls="navbarNavDropdown-1"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse text-center" id="navbarNavDropdown-1">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home
+{#            <span class="sr-only">(current)</span>#}
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#a" id="navbarDropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Services
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Design</a>
+            <a class="dropdown-item" href="#">Development</a>
+            <a class="dropdown-item" href="#">Marketing</a>
+          </div>
+        </li>
+
+        {% if request.user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#a" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ request.user.email }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+            </div>
+          </li>
+        {% else %}
+          <li class="nav-item">
+{#            <a class="nav-link" href="{% url 'login' %}"> Login page </a>#}
+            <a class="nav-link" href="/login/auth0"> Login </a>
+  {#          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">#}
+  {#            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>#}
+  {#          </div>#}
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  {% block content %}
+    <p>Use this document as a way to quick start any new project.</p>
+  {% endblock content %}
+
+{% block suffix_scripts_load %}
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'assets/vendor/popper/popper.min.js' %}"></script>
+<script src="{% static 'assets/vendor/bootstrap/bootstrap.min.js' %}" ></script>
+{#<script src="{% static 'js/search_filter.js' %}"></script>#}
+{% endblock suffix_scripts_load %}
+
+<!--   lazy javascript -->
+<script src="{% static 'assets/js/lazy.js' %}"></script>
+
+</body>
+</html>
+

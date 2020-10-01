@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load templatetags %}
+{% load static %}
+{% load humanize %}
+{% block css %}
+  {{ block.super }}
+  <style>
+    table {
+      width: 100%;
+      border-spacing: 0 1em;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    tr:nth-child(even) {
+      background-color: #d6d4d4;
+    }
+
+    .table tbody tr:hover {
+      background-color: #daeff1; /*--- this is a blue color when hover ---*/
+    }
+
+    .table tbody tr:focus {
+      box-shadow: none;
+      outline: 0;
+    }
+    .table .accordian-body {
+      background: #daeff1;
+    }
+
+    .table tr {
+      cursor: pointer;
+      box-shadow: 1px 1px 3px #ccc;
+      border-radius: 5px;
+      border-spacing: 5px;
+      background: #ffffff;
+    }
+
+    .table .space {
+      height: 10px;
+    }
+
+    .hedding h1 {
+      color: #fff;
+      font-size: 25px;
+    }
+
+    .main-section {
+      margin-top: 120px;
+    }
+
+    .hiddenRow {
+      padding: 0 4px !important;
+      background-color: #eeeeee;
+      font-size: 13px;
+    }
+
+    .accordian-body span {
+      color: #a2a2a2 !important;
+    }
+
+    a {
+      text-decoration: none;
+      display: inline-block;
+      padding: 8px 16px;
+    }
+
+    a:hover {
+      background-color: #ddd;
+      color: black;
+      text-decoration: none;
+
+    }
+
+    .previous {
+      background-color: #353535;
+      color: white;
+    }
+
+    .next {
+      background-color: #353535;
+      color: white;
+    }
+
+    .round {
+      border-radius: 8%;
+    }
+    .nextPreviousButtons {
+      text-align: center;
+      position: sticky;
+      font-size: 15px;
+    }
+
+  </style>
+
+{% endblock %}
+{% block content %}
+
+  <div class="container-fluid" style="margin-top: 30px">
+    <h2><strong>Sample Job Description list</strong></h2>
+    <table class="table table-responsive" style="border-collapse:collapse;" id="id_job_list_table">
+      <thead>
+      <tr>
+        <th> Job Title</th>
+{#        <th>Company</th>#}
+        <th>Job Location</th>
+        <th> Publish Date</th>
+
+      </tr>
+      <tr class="space">&nbsp;</tr>
+      </thead>
+      <tbody>
+      {% for job in jobdescription_instances %}
+        <tr class='accordion-toggle tbl-row' data-toggle="collapse" data-target="#demo{{ job.id }}"
+            id="job_desc_id_{{ job.id }}" tabindex="0">
+          <td>{{ job.job_title }}</td>
+
+          <!-- commented ; job.company_name does not exist yet -->
+{#          <td id="job_title_id_{{ job.id }}"><strong> "{{ job.company_name }}" </strong></td>#}
+          <td id="job_title_id_{{ job.id }}">{{ job.job_location }}</td>
+          <td id="job_title_id_{{ job.id }}">{% now "d/m/Y" %}</td>
+        <tr class="p">
+          <td colspan="4" class="hiddenRow">
+            <div class="accordian-body collapse p-3" id="demo{{ job.id }}">
+{#              <p id="job_url_id_{{ job.id }}">{{ job.job_url }}</p>#}
+{#              <p id="job_title_id_{{ job.id }}">{{ job.job_title }}  </p>#}
+{#              <p id="job_found_url_id_{{ job.id }}">{{ job.found_url }}  </p>#}
+{#              <p id="job_location_id_{{ job.id }}">{{ job.job_location }}  </p>#}
+              <div id="job_full_desc_id_{{ job.id }}">{{ job.full_description|safe }} </div>
+              <p id="job_seen_time_epoch_id_{{ job.id }}">Seen : {% if  job.seen_time_epoch %} {{ job.seen_time_epoch|timestamp_to_time|time_to_naturaltime }}
+                 {% else %} - {% endif %}</p>
+{#              <p id="similiar_job_id_{{ job.id }}">Similar Jobs : {{ job.similar_job_string }}</p>#}
+              {% if job.short_description and job.tags_string and job.scraping_task_desc %}
+                  <p id="job_short_desc_id_{{ job.id }}">Short Description : {{ job.short_description|safe }} </p>
+                  <p id="job_tags_id_{{ job.id }}">Tags String : {{ job.tags_string }} </p>
+                  <p id="job_scraping_t_desc_id_{{ job.id }}">Scraping Task Desc : {{ job.scraping_task_desc }} </p>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        </tr>
+        <tr class="space">&nbsp;</tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+  <div class="nextPreviousButtons">
+    <a href="#" class="previous round">Previous</a>
+    <a href="#" class="next round">Next</a>
+  </div>
+
+  </div>
+
+{% endblock content %}
+{% block javascript %}
+  {{ block.super }}
+  <script>
+    jQuery(document).ready(function ($) {
+      $(".clickable-row").click(function () {
+        window.location = $(this).data("href");
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      $('.table tbody tr').click(function () {
+        $(this).addClass('active'); //I'm adding the color gray with css to '.active'
+      });
+    });
+  </script>
+  <script>
+    $('.accordion-toggle').click(function () {
+      $('.hiddenRow').hide();
+      $(this).next('tr').find('.hiddenRow').show();
+    });
+  </script>
+{% endblock javascript %}

@@ -1,0 +1,16 @@
+# PRECAUTION: avoid production dependencies that aren't in development
+
+-r ./base.txt
+
+gunicorn==20.0.4  # https://github.com/benoitc/gunicorn
+
+# Note: "--no-binary" creates a problem for windows installs; remove "--no-binary" for windows installs
+psycopg2==2.8.5 # https://github.com/psycopg/psycopg2
+psycopg2-binary==2.8.5
+Collectfast==1.3.1  # https://github.com/antonagestam/collectfast
+sentry-sdk==0.17.0  # https://github.com/getsentry/sentry-python
+
+# Django
+# ------------------------------------------------------------------------------
+django-storages[boto3]==1.8  # https://github.com/jschneier/django-storages
+django-anymail[mailgun]==7.0.0  # https://github.com/anymail/django-anymail

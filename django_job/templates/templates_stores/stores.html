@@ -1,0 +1,147 @@
+{% extends "templates_stores/base_stores.html" %}
+{% load templatetags %}
+{% load static %}
+{% load humanize %}
+
+{#{% block body_tag %}#}
+{#<body onload="init()">#}
+{#{% endblock body_tag %}#}
+
+
+{% block content %}
+
+
+
+
+<form action="{% url 'views_download_stores' %}" method="get">
+
+<button type="submit" name='mybtn2' >Download results in Excel</button>
+ </form>
+
+
+
+
+
+
+
+    
+
+
+<br /><br />
+    <form action="" method="get">   
+        <label for="from">PerPage </label>
+            <input type="text" name="per_page"><br /><br />
+            <label for="from">Page </label>
+            <input id="projectId" name="page" maxlength="2">
+           <input type="submit" value="Submit">
+    </form>
+
+    <p>{{ s_date }}</p>
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+<div class="info">
+{# https://stackoverflow.com/a/22466415#}
+{#  forloop.counter starts the index with 1, divisibleby 3 does not work. So use forloop.counter0 instead.#}
+
+{% for store in stores_instances %}
+      {% if forloop.first %}<div class="row">{% endif %}
+{#    <div class="col-12 col-md-4">#}
+    <div class="col-xs-4">
+      <div class="card.no-hover" id="card_job_{{ store.id }}">
+        <div class="card-body">
+  {#        <h4 class="card-title mt-2">{{ job.job_title }}</h4>#}
+  {#        <h4 class="card-title mt-2"><a href="{{ job.job_url }}" target="_blank" rel="nofollow, noindex, noreferrer"> {{ job.job_title }}</a></h4>#}
+          <h4 class="card-title mt-2"> <a data-toggle="collapse" href=" {{ store.store_url }}" target="_blank" rel="nofollow, noindex, noreferrer"> {{ store.store_name }} </a></h4>
+          <div> {{ store.store_description }}</div>
+          <div class="stats d-flex flex-row align-items-center align-items-lg-start text-center text-lg-left">
+            <div class="prod_count ml-auto"><b>{{ store.total_products }}</b> products </div>
+            <div class="prod_avg ml-auto"><b>${{ store.avg_prod_price }}</b> avg price </div>
+
+          </div>
+
+          <div class="stats d-flex flex-row align-items-center align-items-lg-start text-center text-lg-left">
+          {% if store.fb_url %}<a href="{{ store.fb_url }}" class="" target="_blank" rel="nofollow, noindex, noreferrer"><div class="fab fa-facebook-f"></div></a>{% endif %}
+          {% if store.twitter_url %}<a href="{{ store.twitter_url }}" class="" target="_blank" rel="nofollow, noindex, noreferrer"><div class="fab fa-twitter"></div></a>{% endif %}
+          {% if store.instagram_url %}<a href="{{ store.instagram_url }}" class="" target="_blank" rel="nofollow, noindex, noreferrer"><div class="fab fa-instagram"></div></a>{% endif %}
+          {% if store.pinterest_url %}<a href="{{ store.pinterest_url }}" class="" target="_blank" rel="nofollow, noindex, noreferrer"><div class="fab fa-pinterest"></div></a>{% endif %}
+
+{#            <div class="fab fa-twitter"><a href="{{ store.twitter_url }}" class="">tw </a></div>#}
+{#            <div class="prod_count ml-2 ml-lg-0"><a href="{{ store.linkedin_url }}" class="">lk </a></div>#}
+{#            <div class="fab fa-instagram"><a href="{{ store.instagram_url }}" class="">ig </a></div>#}
+{#            <div class="fab fa-youtube"><a href="{{ store.youtube_url }}" class="">yt </a></div>#}
+{#            <div class="prod_count ml-2 ml-lg-0"><a href="{{ store.pinterest_url }}" class="">pt </a></div>#}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if forloop.counter|divisibleby:3 %}</div><div class="row">{% endif %}
+    {% if forloop.last %}</div>{% endif %}
+{% endfor %}
+</div>
+</div>
+
+
+<ul class="pagination">
+    {% if 'previous_page' in pagination_data and pagination_data.previous_page != None %}
+      <li class="page-item"><a class="page-link" href="?page={{ pagination_data.previous_page }}"><i class="fas fa-long-arrow-alt-left"></i></a></li>
+
+      {% if pagination_data.current_page >= 4 %}
+        <li class="page-item"><a class="page-link" href="?page={{pagination_data.current_page | add:-3}}">{{pagination_data.current_page | add:-3}}</a></li>
+      {% endif %}
+      {% if pagination_data.current_page >= 3 %}
+        <li class="page-item"><a class="page-link" href="?page={{pagination_data.current_page | add:-2}}">{{pagination_data.current_page | add:-2}}</a></li>
+      {% endif %}
+      {% if pagination_data.current_page >= 2 %}
+        <li class="page-item"><a class="page-link" href="?page={{pagination_data.current_page | add:-1}}">{{pagination_data.current_page | add:-1}}</a></li>
+      {% endif %}
+    {% else %}
+      <li class="page-item disabled"><a class="page-link" href="#"><i class="fas fa-long-arrow-alt-left"></i></a></li>
+    {% endif %}
+
+    {#  current page#}
+    <li class="page-item active"><a class="page-link" href="#">{{ pagination_data.current_page }}</a></li>
+
+{#    next pages#}
+    {% if 'next_page' in pagination_data and pagination_data.next_page != None %}
+      <li class="page-item"><a class="page-link" href="?page={{pagination_data.current_page | add:1}}">{{pagination_data.current_page | add:1}}</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{pagination_data.current_page | add:2}}">{{pagination_data.current_page | add:2}}</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{pagination_data.current_page | add:3}}">{{pagination_data.current_page | add:3}}</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ pagination_data.next_page }}"><i class="fas fa-long-arrow-alt-right"></i></a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link" href="?page=#"><i class="fas fa-long-arrow-alt-right"></i></a></li>
+    {% endif %}
+</ul>
+
+
+{% endblock content %}
+

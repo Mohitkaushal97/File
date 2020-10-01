@@ -1,0 +1,29 @@
+{% extends "templates_stores/base_stores.html" %}
+{% load templatetags %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+<br>
+<div>
+  auth0_uid: {{ auth0_uid }}
+</div>
+
+<br/>
+<div>
+  auth0user_email: {{ auth0user_email }}
+</div>
+<br/>
+
+<div>
+  crb_userid: {{ crb_userid }}
+</div>
+
+<div>
+  hosted_page_url: <a href="{{ hosted_page_url }}" target="_blank"> {{ hosted_page_url }} </a>
+</div>
+
+{% endblock content %}
+

@@ -1,0 +1,120 @@
+
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+
+  <style>
+      .body {
+        font-family: "Open Sans",
+        -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+        "Helvetica Neue", Helvetica, Arial, sans-serif;
+        padding-top: 30px;
+        position: relative;
+    }
+    #id_search_page {
+      padding: 30px;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      margin: 10px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .btn{
+      margin-right: 10px;
+    }
+
+  {#loader CSS start #}
+      .window-loader{
+        background-color: rgba(255,255,255, 0.70);
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding-top: 20%;
+        margin-top: 50px;
+        {#height: 100vh;#}
+      }
+      @media (max-width: 769px){
+        .window-loader{
+          padding-top: 50%;
+        }
+      }
+      .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid blue;
+        border-bottom: 16px solid blue;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+        display: block;
+        margin: 0 auto;
+        position: fixed;
+        margin-left: 25%;
+      }
+
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+  {## loader CSS end #}
+
+  </style>
+
+  <div class="body">
+  <div class="window-loader" style="display: none" >
+    <div class="loader" ></div>
+  </div>
+    <div class="container" id="id_search_page">
+      <div style="font-size: 30px"> <strong> {{ jobdescription_instance.job_title|title }} </strong>
+      </div>
+      <br>
+
+      <div class=" btn-group-lg "  aria-label="Basic example">
+        <form method="post" action="" name="voteForm">
+          {% csrf_token %}
+          <input type="text" name="search_id" value="{{ search_id }}" hidden>
+          <input type="text" name="vote" value="1" hidden id="id_vote">
+          <input type="text" name="job_jsha" value="{{ jobdescription_instance.job_jsha }}" hidden>
+          <button type="submit" style="display: none" id="id_btn_submit"></button>
+        </form>
+        <button onclick="return set_vote('1')" type="button" class="btn btn-success">Yes</button>
+        <button onclick="return set_vote('-1')" type="button" class="btn btn-danger">No</button>
+        <button onclick="return set_vote('0')" type="button" class="btn btn-warning">Skip</button>
+      </div>
+      <div>
+      <br>
+        {{ jobdescription_instance.full_description|safe }}
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script>
+    function set_vote(vote) {
+      $('#id_vote').value=vote;
+      document.voteForm.submit();
+
+    }
+  </script>
+
+{% endblock javascript %}
